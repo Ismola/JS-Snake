@@ -9,35 +9,21 @@ let altura = pantalla.height;
 let anchura = pantalla.width;
 // Tamaño de cada cuadraro de la cuadricula
 let cuadrado = altura / cuadricula;
-x= 0;
-y = 0;
-
-// Creacion del mapa
-let mapa = Array();
-let columnas = Array();
-for (let a = 0; a < cuadricula; a++) {
-    for (let i = 0; i < cuadricula; i++) {
-        columnas.push("0");
-    }
-    mapa.push(columnas);
-    columnas = Array();
-}
+let snake = [
+    [0, 0],
+    [cuadrado * 1, 0],
+    [cuadrado * 2, 0],
+];
 
 // Funcion principal
 // setInterval(frame, 1000 / 1);
 function frame() {
-    actualizarMapa();
-    pintarMapa();
-    mostrarMapa();
-
+    moverSnake();
 }
-mapa[0][0] = 1;
-mapa[0][1] = 1;
 
 // Indicar la posicion
 let movimiento;
 document.addEventListener("keyup", function (e) {
-
     switch (e.code) {
         case "ArrowUp":
             if (movimiento != 3) {
@@ -65,90 +51,30 @@ document.addEventListener("keyup", function (e) {
     frame();
 });
 
-function actualizarMapa() {
-    let limite = false;
-    for (let fila = 0; fila < mapa.length; fila++) {
-        for (let columna = 0; columna < mapa[fila].length; columna++) {
-            if (mapa[fila][columna] > 0) {
-                switch (movimiento) {
-                    case 1:
-                        if (fila > 0) {
-                            console.log ("bajando");
-                                mapa[fila - 1][columna] = 1;
-                                mapa[fila][columna] = 0;
-                        }
-                        break;
-                    case 2:
-                        if (columna < mapa[fila].length-1) {
-                            console.log ("derecha");
-                                mapa[fila][columna + 1] = 1;
-                                mapa[fila][columna] = 0;
-                        }
-                        break;
-                    case 3:
-                        if ( (fila < mapa.length-1) && (limite == false) ) {
-                            console.log ("bajando");
-                                mapa[fila + 1][columna] = 1;
-                                mapa[fila][columna] = 0;
-                                limite=true;
-                        }
-                        break;
-                    case 4:
-                        if (columna > 0) {
-                            console.log ("izquierda");
-                                mapa[fila][columna - 1] = 1;
-                                mapa[fila][columna] = 0;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            }
-        }
-    }
-}
 
-function pintarMapa() {
-    ctx.clearRect(0, 0, pantalla.width, pantalla.height);
-    // for (let i = 0; i < mapa.length; i++) {
-    //     if (mapa[i] > 0) {
-    //         // ctx.fillRect(i*cuadrado,0, cuadrado, cuadrado);
-    //         break;
-    //     }
-    // }
-
+function moverSnake() {
+    ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     switch (movimiento) {
         case 1:
-            y -= cuadrado;
+            x =
+            snake.push();
             break;
         case 2:
-            x += cuadrado;
+
             break;
         case 3:
-            y += cuadrado;
+
             break;
         case 4:
-            x -= cuadrado;
+
             break;
         default:
             break;
     }
-    ctx.fillRect(x, y, cuadrado, cuadrado);
-}
 
-function mostrarMapa() {
-    let contador = 1;
-    let fila = "";
-    mapa.forEach(columna => {
-        for (let a = 0; a < columna.length; a++) {
-            fila = fila + columna[a];
-        }
-        console.log(fila + "------" + contador);
-        contador++;
-        fila = "";
+    snake.forEach(coords => {
+        ctx.strokeRect(coords[0], coords[1], cuadrado, cuadrado);
     });
-    console.log();
-}
 
+}
 
