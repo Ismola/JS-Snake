@@ -14,7 +14,7 @@ let cuadrado = altura / cuadricula;
 //--------- Creacion de la serpiente --------
 // Estas variables almacenarán el las coordenadas x e y de cada cuadrado que compone el cuerpo de la serpiente
 let x, y, coords;
-let tamañoInicial = 4;
+let tamañoInicial = 17;
 // La serpiente será un array, que contendrá tantos arrays como cuadrados conformen su cuerrpo. Cada array contendrá dos valores, X e Y
 let snake = Array();
 // Esta variable guardará la ultima tecla que hemos dado
@@ -34,6 +34,8 @@ setInterval(frame, 1000 / 15);
 // bucle principal
 function frame() {
     moverSnake();
+    detectarBordes();
+    
 }
 // Registrador de movimiento de teclas
 document.addEventListener("keyup", function (e) {
@@ -73,6 +75,7 @@ function crearSerpiente(tamañoSerpiente) {
         snake.push(coords)
     }
 }
+// Esta función será la encargada de ir movienvo la serpiete. Para ello creará un cuadrado en la direccion seleccionada y eliminará el ultimo cuadrado que compone su cuerpo 
 function moverSnake() {
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     switch (movimiento) {
@@ -117,4 +120,21 @@ function moverSnake() {
     });
 
 }
+function detectarBordes() {
+    if ((snake[snake.length - 1][0] == 0 - cuadrado) || (snake[snake.length - 1][0] == pantalla.width) || (snake[snake.length - 1][1] == 0 - cuadrado) || (snake[snake.length - 1][1] == pantalla.height)) {
+        console.log("colision con pared");
+    }
+    for (let a = 0; a < snake.length - 1; a++) {
+        coords = snake[a];
+        if((coords[0] == snake[snake.length-1][0]) && (coords[1] == snake[snake.length-1][1]) ){
+            console.log("colision con el cuerpo");
+        }
+    }
 
+}
+function crearManzana(){
+
+}
+function crearRandom() {
+    return Math.floor((Math.random() * (max - 0 + 1)) + 0);
+}
