@@ -5,7 +5,7 @@ const ctx = pantalla.getContext("2d");
 // Cuadricula de la pantalla del juego
 let cuadricula = 20;
 // Altura y a anchura en pixeles de la pantalla
-let resolucion = 300;
+let resolucion = 600;
 pantalla.height = resolucion;
 pantalla.width = resolucion;
 let altura = pantalla.height;
@@ -30,7 +30,7 @@ crearSerpiente(tamañoInicial);
 // PARTE DE LAS FUNCIONES DEL JUEGO
 // --------------------------------------
 // llamada al bucle principal. Se supone que 1000/15 son 15 fotogramas por segundo
-let bucle = setInterval(frame, 1000 / 10);
+let bucle = setInterval(frame, 1000 /15);
 
 // bucle principal
 function frame() {
@@ -125,6 +125,7 @@ function moverSnake() {
     }
     snake.forEach(coords => {
         ctx.fillRect(coords[0], coords[1], cuadrado, cuadrado);
+        ctx.fillStyle = "#314108";
     });
 }
 // Esta funcion detecta si si la cabeza ha tocado un borde, si ha tocado aluna parte de su cuerpo o una manzana y actua en consecuencia

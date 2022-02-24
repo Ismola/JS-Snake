@@ -6,16 +6,36 @@ body{
     position: relative;
     width: 100vw;
     height: 100vh;
-    /* background: red; */
+    background: rgb(159, 215, 223);
 
+
+    overflow: hidden;
+}
+.consola{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+
+
+
+    /* background-color: red; */
     display: flex;
     justify-content: center;
     align-items: center ;
 }
+.consola > img{
+    width: 100vw;
+    height: auto;
+    max-width: 800px;
+}
 canvas{
-    border: 1px solid black;
+    border: 2px solid #314108;
+    padding: 1px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+
+
+    width: 41vw;
+    height: auto;
+    max-width: 330px;
 }
