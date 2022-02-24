@@ -5,7 +5,7 @@ const ctx = pantalla.getContext("2d");
 // Cuadricula de la pantalla del juego
 let cuadricula = 20;
 // Altura y a anchura en pixeles de la pantalla
-let resolucion = 300
+let resolucion = 300;
 pantalla.height = resolucion;
 pantalla.width = resolucion;
 let altura = pantalla.height;
@@ -15,7 +15,7 @@ let cuadrado = altura / cuadricula;
 //--------- Creacion de la serpiente --------
 // Estas variables almacenarán el las coordenadas x e y de cada cuadrado que compone el cuerpo de la serpiente
 let x, y, coords;
-let tamañoInicial = 2;
+let tamañoInicial = 4;
 // La serpiente será un array, que contendrá tantos arrays como cuadrados conformen su cuerrpo. Cada array contendrá dos valores, X e Y
 let snake = Array();
 // Esta variable guardará la ultima tecla que hemos dado
@@ -124,7 +124,7 @@ function moverSnake() {
             break;
     }
     snake.forEach(coords => {
-        ctx.strokeRect(coords[0], coords[1], cuadrado, cuadrado);
+        ctx.fillRect(coords[0], coords[1], cuadrado, cuadrado);
     });
 }
 // Esta funcion detecta si si la cabeza ha tocado un borde, si ha tocado aluna parte de su cuerpo o una manzana y actua en consecuencia
@@ -151,9 +151,11 @@ function detectarBordes() {
         }
     }
 }
+// Esta función pinta la manzana, saca las coordenadas de la variables posicionManzana
 function pintarManzana() {
-    ctx.strokeRect(posicionManzana[0] * cuadrado, posicionManzana[1] * cuadrado, cuadrado, cuadrado);
+    ctx.fillRect(posicionManzana[0] * cuadrado, posicionManzana[1] * cuadrado, cuadrado, cuadrado);
 }
+// Esta funcino genera unas coordenadas aleatorias dentro del tablero
 function crearManzana() {
     x = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
     y = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
@@ -161,5 +163,5 @@ function crearManzana() {
 
 }
 function reiniciarPartida(){
-
+    
 }
