@@ -1,3 +1,4 @@
+
 // DECLARACIONES DE LAS VARIABLES PARA EL JUEGO
 // --------------------------------------------
 const pantalla = document.getElementById("pantalla");
@@ -26,37 +27,70 @@ let ultimoMovimiento;
 let posicionManzana = crearManzana();
 // Esta variables
 let comidoManzana = false;
-crearSerpiente(tamañoInicial);
 // PARTE DE LAS FUNCIONES DEL JUEGO
 // --------------------------------------
-// llamada al bucle principal. Se supone que 1000/15 son 15 fotogramas por segundo
-let bucle = setInterval(frame, 1000 /15);
-
+// Esta variable contendrá el loop de la partida;
+let bucle;
+// Esta función guardará la cola de la serpiente. Esto es así porque cada vez que se mueve, se añade un cuadrado en la direccion a la que va la serpiente, y se borra la cola. Y cuando choca la serpiente, la cabeza se mete dentro de la 
+let ultimaPos;
+// Esta funcion acaba la partida
+function terminarPartida() {
+    movimiento = null;
+    clearInterval(bucle);
+    ctx.fillRect(ultimaPos[0], ultimaPos[1], cuadrado, cuadrado);
+    document.getElementById("consola").classList.add('animate__animated', 'animate__headShake');
+}
+// Esta funcion empieza la partida
+function empezarPartida() {
+    document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake');
+    movimiento = null;
+    ctx.clearRect(0, 0, pantalla.height, pantalla.width);
+    crearSerpiente(tamañoInicial);
+    bucle = setInterval(frame, 1000 / 15);
+}
 // bucle principal
+// Ese bucle empieza la partida
 function frame() {
     moverSnake();
     pintarManzana();
     detectarBordes();
 }
-// Registrador de movimiento de teclas
+// Registra cuando se suelta una tecla para quitar el color de las teclas
 document.addEventListener("keyup", function (e) {
+        document.getElementById("btn-top").classList.remove("color");
+        document.getElementById("btn-bot").classList.remove("color");
+        document.getElementById("btn-der").classList.remove("color");
+        document.getElementById("btn-izq").classList.remove("color");
+    });
+
+
+// Registra cuando se pulsa una tecla para mover la serpiente y para darle color a los botones
+document.addEventListener("keydown", function (e) {
+    document.getElementById("btn-top").classList.remove("color");
+    document.getElementById("btn-bot").classList.remove("color");
+    document.getElementById("btn-der").classList.remove("color");
+    document.getElementById("btn-izq").classList.remove("color");
     switch (e.code) {
         case "ArrowUp":
+            document.getElementById("btn-top").classList.add("color");
             if (ultimoMovimiento != 3) {
                 movimiento = 1;
             }
             break;
         case "ArrowRight":
+            document.getElementById("btn-der").classList.add("color");
             if (ultimoMovimiento != 4) {
                 movimiento = 2;
             }
             break;
         case "ArrowDown":
+            document.getElementById("btn-bot").classList.add("color");
             if (ultimoMovimiento != 1) {
                 movimiento = 3;
             }
             break;
         case "ArrowLeft":
+            document.getElementById("btn-izq").classList.add("color");
             if (ultimoMovimiento != 2) {
                 movimiento = 4;
             }
@@ -64,6 +98,7 @@ document.addEventListener("keyup", function (e) {
         default:
             break;
     }
+
 });
 // Funcion que crea a la serpiente
 function crearSerpiente(tamañoSerpiente) {
@@ -87,7 +122,7 @@ function moverSnake() {
             coords = Array(x, y);
             snake.push(coords);
             if (comidoManzana == false) {
-                snake.shift();
+                ultimaPos = snake.shift();
             }
             break;
         case 2:
@@ -97,7 +132,7 @@ function moverSnake() {
             coords = Array(x, y);
             snake.push(coords);
             if (comidoManzana == false) {
-                snake.shift();
+                ultimaPos = snake.shift();
             }
             break;
         case 3:
@@ -107,7 +142,7 @@ function moverSnake() {
             coords = Array(x, y);
             snake.push(coords);
             if (comidoManzana == false) {
-                snake.shift();
+                ultimaPos = snake.shift();
             }
             break;
         case 4:
@@ -117,7 +152,7 @@ function moverSnake() {
             coords = Array(x, y);
             snake.push(coords);
             if (comidoManzana == false) {
-                snake.shift();
+                ultimaPos = snake.shift();
             }
             break;
         default:
@@ -130,27 +165,25 @@ function moverSnake() {
 }
 // Esta funcion detecta si si la cabeza ha tocado un borde, si ha tocado aluna parte de su cuerpo o una manzana y actua en consecuencia
 function detectarBordes() {
+    // Este if detecta si la serpiente ha cochado con una pared
     if ((snake[snake.length - 1][0] == 0 - cuadrado) || (snake[snake.length - 1][0] == pantalla.width) || (snake[snake.length - 1][1] == 0 - cuadrado) || (snake[snake.length - 1][1] == pantalla.height)) {
-        console.log("colision con pared");
-        clearInterval(bucle);
-
-
+        terminarPartida();
     }
-    if ((snake[snake.length - 1][0] == posicionManzana[0] * cuadrado) && (snake[snake.length - 1][1] == posicionManzana[1] * cuadrado)) {
-        console.log("manzana comida");
-        posicionManzana = crearManzana();
-        comidoManzana = true;
-
-    } else {
-        comidoManzana = false;
-    }
+    // Este for detecta si la serpiente se ha chocado contra su propio cuerpo
     for (let a = 0; a < snake.length - 1; a++) {
         coords = snake[a];
         if ((coords[0] == snake[snake.length - 1][0]) && (coords[1] == snake[snake.length - 1][1])) {
-            console.log("colision con el cuerpo");
-            clearInterval(bucle);
+            terminarPartida();
         }
     }
+    if ((snake[snake.length - 1][0] == posicionManzana[0] * cuadrado) && (snake[snake.length - 1][1] == posicionManzana[1] * cuadrado)) {
+
+        posicionManzana = crearManzana();
+        comidoManzana = true;
+    } else {
+        comidoManzana = false;
+    }
+
 }
 // Esta función pinta la manzana, saca las coordenadas de la variables posicionManzana
 function pintarManzana() {
@@ -162,7 +195,4 @@ function crearManzana() {
     y = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
     return Array(x, y);
 
-}
-function reiniciarPartida(){
-    
 }

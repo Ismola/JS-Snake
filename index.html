@@ -14,19 +14,25 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css"
 		integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
 	<!-- animaciones  -->
-	<link rel="stylesheet" href="css/animate.css">
-	<script src="js/wow.min.js"></script>
-	<script>new WOW().init();</script>
+	<link rel="stylesheet" href="css/animate.min.css">
+	<!-- <script src="js/wow.min.js"></script> -->
 </head>
+
 <body>
 	<div class="contenedor">
-		<div class="consola">
+		<button style="position: absolute; top: 0; left: 0;" onclick="empezarPartida()">Empezar juego</button>
+		<div id="consola" class="consola">
+			<img id="btn-bot" class="botones" src="Imagenes/botonabajo.png" alt="">
+			<img id="btn-top" class="botones" src="Imagenes/botonarriba.png" alt="">
+			<img id="btn-der" class="botones" src="Imagenes/botonderecha.png" alt="">
+			<img id="btn-izq" class="botones" src="Imagenes/botonizq.png" alt="">
 			<img src="Imagenes/consola.png" alt="">
 			<canvas id="pantalla"></canvas>
 		</div>
+		
 	</div>
-
 	<!-- <script src="bootstrap-5.1.3-dist/js/bootstrap.min.js"></script> -->
+	<!-- <script>new WOW().init();</script> -->
 	<script type="text/javascript" src="js/js.js"></script>
 </body>
 

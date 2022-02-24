@@ -8,17 +8,45 @@ body{
     height: 100vh;
     background: rgb(159, 215, 223);
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 
     overflow: hidden;
 }
-.consola{
+.botones{
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%,-50%);
 
+    width: 100vw;
+    height: auto;
+    max-width: 800px;
 
+    filter: opacity(0%);
+}
+.color{
+    animation: color .3s;
+}
+@keyframes color {
+    0%{
+        filter: opacity(0%);
+    }
+    50%{
+        filter: opacity(100%);
+    }
+    100%{
+        filter: opacity(0%);
+    }
+}
 
+.consola{
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%); */
     /* background-color: red; */
     display: flex;
     justify-content: center;
