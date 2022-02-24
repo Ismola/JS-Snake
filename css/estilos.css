@@ -11,7 +11,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 
     overflow: hidden;
 }
@@ -28,17 +28,17 @@ body{
     filter: opacity(0%);
 }
 .color{
-    animation: color .3s;
+    animation: color .1s forwards;
 }
 @keyframes color {
     0%{
         filter: opacity(0%);
     }
-    50%{
+    75%{
         filter: opacity(100%);
     }
     100%{
-        filter: opacity(0%);
+        filter: opacity(100%);
     }
 }
 

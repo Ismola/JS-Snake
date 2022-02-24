@@ -34,6 +34,9 @@ let bucle;
 // Esta función guardará la cola de la serpiente. Esto es así porque cada vez que se mueve, se añade un cuadrado en la direccion a la que va la serpiente, y se borra la cola. Y cuando choca la serpiente, la cabeza se mete dentro de la 
 let ultimaPos;
 // Esta funcion acaba la partida
+let sonido = new Audio();
+sonido.src = "perder.mp3";
+sonido.play();
 function terminarPartida() {
     movimiento = null;
     clearInterval(bucle);
