@@ -1,8 +1,9 @@
-body{
+body {
     margin: 0;
     padding: 0;
 }
-.contenedor{
+
+.contenedor {
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -15,11 +16,18 @@ body{
 
     overflow: hidden;
 }
-.botones{
+
+.contenedor>button {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.botones {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 
     width: 100vw;
     height: auto;
@@ -27,37 +35,65 @@ body{
 
     filter: opacity(0%);
 }
-.color{
+
+.color {
     animation: color .1s forwards;
 }
+
 @keyframes color {
-    0%{
+    0% {
         filter: opacity(0%);
     }
-    75%{
+
+    75% {
         filter: opacity(100%);
     }
-    100%{
+
+    100% {
         filter: opacity(100%);
     }
 }
 
+.start {
+    position: absolute;
+    top: 5%;
+    left: calc(50%-300px);
+    width: 100vw;
+    max-width: 300px;
+
+    /* background-color: red; */
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+
+    z-index: 2;
+}
+.start:active{
+    max-width: 295px;
+}
+.start > img{
+    width: 100%;
+    height: auto;
+}
 .consola{
-    /* position: absolute;
-    top: 50%;
+    /* position: absolute; */
+    /* top: 50%;
     left: 50%;
     transform: translate(-50%,-50%); */
     /* background-color: red; */
     display: flex;
     justify-content: center;
-    align-items: center ;
+    align-items: center;
 }
-.consola > img{
+
+.consola>img {
     width: 100vw;
     height: auto;
     max-width: 800px;
 }
-canvas{
+
+canvas {
     border: 2px solid #314108;
     padding: 1px;
     position: absolute;

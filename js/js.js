@@ -34,18 +34,20 @@ let bucle;
 // Esta función guardará la cola de la serpiente. Esto es así porque cada vez que se mueve, se añade un cuadrado en la direccion a la que va la serpiente, y se borra la cola. Y cuando choca la serpiente, la cabeza se mete dentro de la 
 let ultimaPos;
 // Esta funcion acaba la partida
-let sonido = new Audio();
-sonido.src = "perder.mp3";
-sonido.play();
 function terminarPartida() {
     movimiento = null;
     clearInterval(bucle);
     ctx.fillRect(ultimaPos[0], ultimaPos[1], cuadrado, cuadrado);
     document.getElementById("consola").classList.add('animate__animated', 'animate__headShake');
+    document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp');
+    document.getElementById("start").classList.add('animate__animated', 'animate__backInDown');
+
 }
 // Esta funcion empieza la partida
 function empezarPartida() {
-    document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake');
+    document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp','animate__delay-2s');
+    document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake', 'animate__jackInTheBox','animate__delay-1s');
+    document.getElementById("start").classList.add('animate__animated', 'animate__backOutUp');
     movimiento = null;
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     crearSerpiente(tamañoInicial);
@@ -198,4 +200,11 @@ function crearManzana() {
     y = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
     return Array(x, y);
 
+}
+
+
+
+function inicio(){
+    document.getElementById("start").classList.add('animate__animated', 'animate__backInDown', 'animate__delay-2s');
+    document.getElementById("consola").classList.add('animate__animated', 'animate__jackInTheBox', 'animate__delay-1s');    
 }
