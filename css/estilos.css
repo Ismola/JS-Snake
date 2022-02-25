@@ -37,28 +37,15 @@ body {
 }
 
 .color {
-    animation: color .1s forwards;
+    filter: opacity(100%);
 }
 
-@keyframes color {
-    0% {
-        filter: opacity(0%);
-    }
-
-    75% {
-        filter: opacity(100%);
-    }
-
-    100% {
-        filter: opacity(100%);
-    }
-}
 
 .start {
     position: absolute;
     top: 5%;
     left: calc(50%-300px);
-    width: 100vw;
+    width: 50vw;
     max-width: 300px;
 
     /* background-color: red; */
