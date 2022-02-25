@@ -27,6 +27,9 @@ let ultimoMovimiento;
 let posicionManzana = crearManzana();
 // Esta variables
 let comidoManzana = false;
+let contador = 0;
+
+
 // PARTE DE LAS FUNCIONES DEL JUEGO
 // --------------------------------------
 // Esta variable contendrá el loop de la partida;
@@ -35,28 +38,33 @@ let bucle;
 let ultimaPos;
 // Esta funcion acaba la partida
 function terminarPartida() {
+    contador = 0;
     movimiento = null;
     clearInterval(bucle);
     ctx.fillRect(ultimaPos[0], ultimaPos[1], cuadrado, cuadrado);
     // Estas clases sirven para las animaciones
+    document.getElementById("fondoColor").style.filter = "opacity(0%)";
     document.getElementById("consola").classList.add('animate__animated', 'animate__headShake');
     document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp');
     document.getElementById("start").classList.add('animate__animated', 'animate__backInDown');
 }
 // Esta funcion empieza la partida
 function empezarPartida() {
+    contador = 0;
+    clearInterval(bucle);
+    movimiento = 2;
+    ctx.clearRect(0, 0, pantalla.height, pantalla.width);
+    crearSerpiente(tamañoInicial);
+    bucle = setInterval(frame, 1000 / 15);
+    // Estas clases sirven para las animaciones
+    document.getElementById("fondoColor").style.filter = "opacity(0%)";
     document.getElementById("btn-top").classList.remove("color");
     document.getElementById("btn-der").classList.remove("color");
     document.getElementById("btn-bot").classList.remove("color");
     document.getElementById("btn-izq").classList.remove("color");
-    clearInterval(bucle);
     document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp', 'animate__delay-2s');
     document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake', 'animate__jackInTheBox', 'animate__delay-1s');
     document.getElementById("start").classList.add('animate__animated', 'animate__backOutUp');
-    movimiento = null;
-    ctx.clearRect(0, 0, pantalla.height, pantalla.width);
-    crearSerpiente(tamañoInicial);
-    bucle = setInterval(frame, 1000 / 15);
 }
 // bucle principal
 // Ese bucle empieza la partida
@@ -71,7 +79,7 @@ document.addEventListener("keyup", function (e) {
         case "ArrowUp":
             document.getElementById("btn-top").classList.remove("color");
             break;
-            case "ArrowRight":
+        case "ArrowRight":
             document.getElementById("btn-der").classList.remove("color");
             break;
         case "ArrowDown":
@@ -194,9 +202,10 @@ function detectarBordes() {
         }
     }
     if ((snake[snake.length - 1][0] == posicionManzana[0] * cuadrado) && (snake[snake.length - 1][1] == posicionManzana[1] * cuadrado)) {
-
         posicionManzana = crearManzana();
         comidoManzana = true;
+        contador++;
+        document.getElementById("fondoColor").style.filter = "opacity(" + contador * 5 + "%)";
     } else {
         comidoManzana = false;
     }
@@ -232,7 +241,6 @@ function inicio() {
     const timeAuto = setTimeout(juegoAutomatico, 1);
 }
 function juegoAutomatico() {
-    // alert("hola");
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     crearSerpiente(tamañoInicial);
     movimiento = 2;
