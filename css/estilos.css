@@ -54,7 +54,7 @@ body {
     display: flex;
     flex-direction: row;
 
-    z-index: 3;
+    z-index: 10;
 }
 .start:active{
     max-width: 295px;
@@ -113,4 +113,33 @@ canvas {
     transition: filter 2s;
     z-index: 1;
 
+}
+#puntos{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: calc(50% -100px);
+
+    z-index: 3;
+
+    transition: 1s ease-in-out;
+
+    background:url(../Imagenes/manzana.png);
+    background-position: center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #fff;
+    font-size: 30px;
+
+}
+.posicionArriba{
+    top: -50%;
+}
+.posicionAbajo{
+    top: 5%;
 }

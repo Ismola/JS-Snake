@@ -25,8 +25,9 @@ let movimiento;
 let ultimoMovimiento;
 // La varible posicionManzana contendrá un array con coordenadas X e Y
 let posicionManzana = crearManzana();
-// Esta variables
+// Esta variable servirá para detectar si ha "chocado con una manzana" (comer)
 let comidoManzana = false;
+// Este es el contador de puntos
 let contador = 0;
 
 
@@ -43,6 +44,8 @@ function terminarPartida() {
     clearInterval(bucle);
     ctx.fillRect(ultimaPos[0], ultimaPos[1], cuadrado, cuadrado);
     // Estas clases sirven para las animaciones
+    document.getElementById("puntos").classList.add("posicionArriba");
+    document.getElementById("puntos").classList.remove("posicionAbajo");
     document.getElementById("fondoColor").style.filter = "opacity(0%)";
     document.getElementById("consola").classList.add('animate__animated', 'animate__headShake');
     document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp');
@@ -57,6 +60,9 @@ function empezarPartida() {
     crearSerpiente(tamañoInicial);
     bucle = setInterval(frame, 1000 / 15);
     // Estas clases sirven para las animaciones
+    document.getElementById("puntos").innerHTML = contador;
+    document.getElementById("puntos").classList.remove("posicionArriba");
+    document.getElementById("puntos").classList.add("posicionAbajo");
     document.getElementById("fondoColor").style.filter = "opacity(0%)";
     document.getElementById("btn-top").classList.remove("color");
     document.getElementById("btn-der").classList.remove("color");
@@ -66,8 +72,7 @@ function empezarPartida() {
     document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake', 'animate__jackInTheBox', 'animate__delay-1s');
     document.getElementById("start").classList.add('animate__animated', 'animate__backOutUp');
 }
-// bucle principal
-// Ese bucle empieza la partida
+// Ese bucle se repite por cada fotograma, en el que llama a varias funciones
 function frame() {
     moverSnake();
     pintarManzana();
@@ -91,7 +96,6 @@ document.addEventListener("keyup", function (e) {
         default:
             break;
     }
-
 });
 // Registra cuando se pulsa una tecla para mover la serpiente y para darle color a los botones
 document.addEventListener("keydown", function (e) {
@@ -190,6 +194,7 @@ function moverSnake() {
 }
 // Esta funcion detecta si si la cabeza ha tocado un borde, si ha tocado aluna parte de su cuerpo o una manzana y actua en consecuencia
 function detectarBordes() {
+    
     // Este if detecta si la serpiente ha cochado con una pared
     if ((snake[snake.length - 1][0] == 0 - cuadrado) || (snake[snake.length - 1][0] == pantalla.width) || (snake[snake.length - 1][1] == 0 - cuadrado) || (snake[snake.length - 1][1] == pantalla.height)) {
         terminarPartida();
@@ -205,7 +210,10 @@ function detectarBordes() {
         posicionManzana = crearManzana();
         comidoManzana = true;
         contador++;
+        document.getElementById("puntos").innerHTML = contador;
+        document.getElementById("puntos").classList.add('animate__animated', 'animate__rubberBand');
         document.getElementById("fondoColor").style.filter = "opacity(" + contador * 5 + "%)";
+        setTimeout(aux, 1000);
     } else {
         comidoManzana = false;
     }
@@ -240,13 +248,14 @@ function inicio() {
     document.getElementById("consola").classList.add('animate__animated', 'animate__jackInTheBox', 'animate__delay-1s');
     const timeAuto = setTimeout(juegoAutomatico, 1);
 }
+// Esta función se encargará de empezar el modo de juego automático
 function juegoAutomatico() {
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     crearSerpiente(tamañoInicial);
     movimiento = 2;
     bucle = setInterval(automatico, 1000 / 40);
-
 }
+// Esta funcion moverá la serpiente automaticamente
 function automatico() {
     moverSnake();
     pintarManzana();
@@ -255,21 +264,12 @@ function automatico() {
     document.getElementById("btn-der").classList.remove("color");
     document.getElementById("btn-bot").classList.remove("color");
     document.getElementById("btn-izq").classList.remove("color");
-
-    // Todos estos If sirven para que la serpiente juege sola en el inicio
+    // Todos estos If sirven para que la serpiente juege sola en el inicio. Lo he sacado a base de prueba y error. Aunque parezcan un monstruo, tienen su sentido
     if ((snake[snake.length - 1][0] == pantalla.width - cuadrado) || (snake[snake.length - 1][0] == 0 + cuadrado)) {
         movimiento = 3;
         document.getElementById("btn-bot").classList.add("color");
     }
-    if ((snake[snake.length - 1][1] % (resolucion / cuadrado) == 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != pantalla.width - cuadrado) && (snake[snake.length - 1][0] != 0)) {
-        movimiento = 2;
-        document.getElementById("btn-der").classList.add("color");
-    }
-    if ((snake[snake.length - 1][1] % (resolucion / cuadrado) != 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != 0 + cuadrado) && (snake[snake.length - 1][0] != 0)) {
-        movimiento = 4;
-        document.getElementById("btn-izq").classList.add("color");
-    }
-    if ((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == pantalla.height - cuadrado)) {
+    if ( ((snake[snake.length - 1][1] % (resolucion / cuadrado) != 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != 0 + cuadrado) && (snake[snake.length - 1][0] != 0)) || (snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == pantalla.height - cuadrado)) {
         movimiento = 4;
         document.getElementById("btn-izq").classList.add("color");
     }
@@ -277,12 +277,11 @@ function automatico() {
         document.getElementById("btn-top").classList.add("color");
         movimiento = 1;
     }
-    if (((snake[snake.length - 1][0] == 0) && (snake[snake.length - 1][1] == 0))) {
+    if ((((snake[snake.length - 1][0] == 0) && (snake[snake.length - 1][1] == 0)) || ((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == 0))) || (snake[snake.length - 1][1] % (resolucion / cuadrado) == 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != pantalla.width - cuadrado) && (snake[snake.length - 1][0] != 0)){
         movimiento = 2
         document.getElementById("btn-der").classList.add("color");
     }
-    if (((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == 0))) {
-        movimiento = 2
-        document.getElementById("btn-der").classList.add("color");
-    }
+}
+function aux(){
+    document.getElementById("puntos").classList.remove('animate__animated', 'animate__rubberBand');
 }
