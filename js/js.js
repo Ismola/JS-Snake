@@ -46,8 +46,8 @@ function terminarPartida() {
 // Esta funcion empieza la partida
 function empezarPartida() {
     clearInterval(bucle);
-    document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp','animate__delay-2s');
-    document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake', 'animate__jackInTheBox','animate__delay-1s');
+    document.getElementById("start").classList.remove('animate__animated', 'animate__backOutUp', 'animate__delay-2s');
+    document.getElementById("consola").classList.remove('animate__animated', 'animate__headShake', 'animate__jackInTheBox', 'animate__delay-1s');
     document.getElementById("start").classList.add('animate__animated', 'animate__backOutUp');
     movimiento = null;
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
@@ -63,11 +63,11 @@ function frame() {
 }
 // Registra cuando se suelta una tecla para quitar el color de las teclas
 document.addEventListener("keyup", function (e) {
-        document.getElementById("btn-top").classList.remove("color");
-        document.getElementById("btn-bot").classList.remove("color");
-        document.getElementById("btn-der").classList.remove("color");
-        document.getElementById("btn-izq").classList.remove("color");
-    });
+    document.getElementById("btn-top").classList.remove("color");
+    document.getElementById("btn-bot").classList.remove("color");
+    document.getElementById("btn-der").classList.remove("color");
+    document.getElementById("btn-izq").classList.remove("color");
+});
 // Registra cuando se pulsa una tecla para mover la serpiente y para darle color a los botones
 document.addEventListener("keydown", function (e) {
     document.getElementById("btn-top").classList.remove("color");
@@ -187,7 +187,6 @@ function detectarBordes() {
     } else {
         comidoManzana = false;
     }
-
 }
 // Esta función pinta la manzana, saca las coordenadas de la variables posicionManzana
 function pintarManzana() {
@@ -195,52 +194,62 @@ function pintarManzana() {
 }
 // Esta funcino genera unas coordenadas aleatorias dentro del tablero
 function crearManzana() {
-    x = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
-    y = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
-    return Array(x, y);
-
+    while (true) {
+        x = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
+        y = Math.floor((Math.random() * ((resolucion / cuadrado) - 1 - 0 + 1)) + 0);
+        // Todo esta for y tal es para comprobar que la manzana no aparezca en el cuerpo
+        let manzanaCuerpo = false;
+        for (let a = 0; a < snake.length - 1; a++) {
+            coords = snake[a];
+            if (coords[0] == x * cuadrado && coords[1] == y * cuadrado) {
+                manzanaCuerpo = true;
+                break;
+            }
+        }
+        if (manzanaCuerpo === true) {
+            continue;
+        }
+        return Array(x, y);
+    }
 }
 // Esta funcion se cargará justo al iniciar la pagina
-function inicio(){
+function inicio() {
     document.getElementById("start").classList.add('animate__animated', 'animate__backInDown', 'animate__delay-2s');
     document.getElementById("consola").classList.add('animate__animated', 'animate__jackInTheBox', 'animate__delay-1s');
-    const timeAuto = setTimeout(juegoAutomatico, 2000);
+    const timeAuto = setTimeout(juegoAutomatico, 1);
 }
-
-function juegoAutomatico(){
+function juegoAutomatico() {
     // alert("hola");
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     crearSerpiente(tamañoInicial);
     movimiento = 2;
-    bucle = setInterval(automatico, 10000/9999);
+    bucle = setInterval(automatico, 1000 / 50);
 
 }
 function automatico() {
     moverSnake();
     pintarManzana();
     detectarBordes();
-    if( (snake[snake.length - 1][0] == pantalla.width-cuadrado) || (snake[snake.length - 1][0] == 0+cuadrado)){
-        movimiento=3;
+    // Todos estos If sirven para que la serpiente juege sola en el inicio
+    if ((snake[snake.length - 1][0] == pantalla.width - cuadrado) || (snake[snake.length - 1][0] == 0 + cuadrado)) {
+        movimiento = 3;
     }
-    if( (snake[snake.length - 1][1] % (resolucion / cuadrado) == 0) && (snake[snake.length - 1][1] != 0)  && (snake[snake.length - 1][0] != pantalla.width-cuadrado)){
-        movimiento=2;
+    if ((snake[snake.length - 1][1] % (resolucion / cuadrado) == 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != pantalla.width - cuadrado)) {
+        movimiento = 2;
     }
-    if( (snake[snake.length - 1][1] % (resolucion / cuadrado) != 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != 0+cuadrado)){
-        movimiento=4;
+    if ((snake[snake.length - 1][1] % (resolucion / cuadrado) != 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != 0 + cuadrado)) {
+        movimiento = 4;
     }
-    if ( (snake[snake.length - 1][0] == 0+cuadrado)  && (snake[snake.length - 1][1] == pantalla.height-cuadrado)  ){
-        movimiento=4;
+    if ((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == pantalla.height - cuadrado)) {
+        movimiento = 4;
     }
-    if ( (snake[snake.length - 1][0] == 0)){
-        movimiento=1;
+    if ((snake[snake.length - 1][0] == 0)) {
+        movimiento = 1;
     }
-    if ( ((snake[snake.length - 1][0] == 0) && (snake[snake.length - 1][1] == 0))){
-        movimiento=2
+    if (((snake[snake.length - 1][0] == 0) && (snake[snake.length - 1][1] == 0))) {
+        movimiento = 2
     }
-    if ( ((snake[snake.length - 1][0] == 0+cuadrado) && (snake[snake.length - 1][1] == 0))){
-        movimiento=2
+    if (((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == 0))) {
+        movimiento = 2
     }
-
-
 }
-// console.log(resolucion / cuadrado);

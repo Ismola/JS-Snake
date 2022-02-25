@@ -103,3 +103,19 @@ canvas {
     height: auto;
     max-width: 330px;
 }
+.github{
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+
+    width: 50px;
+    height: 50px;
+
+    cursor: pointer;
+
+    /* background-color: red; */
+}
+.github > a > img{
+    width: 100%;
+    height: auto;
+}

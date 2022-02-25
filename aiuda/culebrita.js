@@ -105,8 +105,7 @@ function generarNuevaPosicionDeComida(culebra) {
     let colisionConCulebra = false;
     for (let i = 0; i < culebra.length; i++) {
       if (culebra[i].posX === posX && culebra[i].posY === posY) {
-        colisionConCulebra = true;
-        break;
+        
       }
     }
 
