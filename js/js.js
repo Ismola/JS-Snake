@@ -16,15 +16,15 @@ let cuadrado = altura / cuadricula;
 //--------- Creacion de la serpiente --------
 // Estas variables almacenarán el las coordenadas x e y de cada cuadrado que compone el cuerpo de la serpiente
 let x, y, coords;
-let tamañoInicial = 4;
 // La serpiente será un array, que contendrá tantos arrays como cuadrados conformen su cuerrpo. Cada array contendrá dos valores, X e Y
+let tamañoInicial = 4;
 let snake = Array();
 // Esta variable guardará la ultima tecla que hemos dado
 let movimiento;
 // Esta almacenará el ultimo movimiento de la serpiente. Lo usaremos para que la serpiente no pueda ir para atras y hacer cosas raras
 let ultimoMovimiento;
 // La varible posicionManzana contendrá un array con coordenadas X e Y
-let posicionManzana = crearManzana();
+let posicionManzana;
 // Esta variable servirá para detectar si ha "chocado con una manzana" (comer)
 let comidoManzana = false;
 // Este es el contador de puntos
@@ -42,6 +42,7 @@ function terminarPartida() {
     contador = 0;
     movimiento = null;
     clearInterval(bucle);
+    ctx.fillStyle = "#314108";
     ctx.fillRect(ultimaPos[0], ultimaPos[1], cuadrado, cuadrado);
     // Estas clases sirven para las animaciones
     document.getElementById("puntos").classList.add("posicionArriba");
@@ -53,12 +54,64 @@ function terminarPartida() {
 }
 // Esta funcion empieza la partida
 function empezarPartida() {
+    posicionManzana = crearManzana();
     contador = 0;
     clearInterval(bucle);
     movimiento = 2;
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     crearSerpiente(tamañoInicial);
     bucle = setInterval(frame, 1000 / 15);
+    // Registra cuando se suelta una tecla para quitar el color de las teclas
+    document.addEventListener("keyup", function (e) {
+        switch (e.code) {
+            case "ArrowUp":
+                document.getElementById("btn-top").classList.remove("color");
+                break;
+            case "ArrowRight":
+                document.getElementById("btn-der").classList.remove("color");
+                break;
+            case "ArrowDown":
+                document.getElementById("btn-bot").classList.remove("color");
+                break;
+            case "ArrowLeft":
+                document.getElementById("btn-izq").classList.remove("color");
+                break;
+            default:
+                break;
+        }
+    });
+    // Registra cuando se pulsa una tecla para mover la serpiente y para darle color a los botones
+    document.addEventListener("keydown", function (e) {
+        switch (e.code) {
+            case "ArrowUp":
+                document.getElementById("btn-top").classList.add("color");
+                if (ultimoMovimiento != 3) {
+                    movimiento = 1;
+                }
+                break;
+            case "ArrowRight":
+                document.getElementById("btn-der").classList.add("color");
+                if (ultimoMovimiento != 4) {
+                    movimiento = 2;
+                }
+                break;
+            case "ArrowDown":
+                document.getElementById("btn-bot").classList.add("color");
+                if (ultimoMovimiento != 1) {
+                    movimiento = 3;
+                }
+                break;
+            case "ArrowLeft":
+                document.getElementById("btn-izq").classList.add("color");
+                if (ultimoMovimiento != 2) {
+                    movimiento = 4;
+                }
+                break;
+            default:
+                break;
+        }
+
+    });
     // Estas clases sirven para las animaciones
     document.getElementById("puntos").innerHTML = contador;
     document.getElementById("puntos").classList.remove("posicionArriba");
@@ -78,57 +131,6 @@ function frame() {
     pintarManzana();
     detectarBordes();
 }
-// Registra cuando se suelta una tecla para quitar el color de las teclas
-document.addEventListener("keyup", function (e) {
-    switch (e.code) {
-        case "ArrowUp":
-            document.getElementById("btn-top").classList.remove("color");
-            break;
-        case "ArrowRight":
-            document.getElementById("btn-der").classList.remove("color");
-            break;
-        case "ArrowDown":
-            document.getElementById("btn-bot").classList.remove("color");
-            break;
-        case "ArrowLeft":
-            document.getElementById("btn-izq").classList.remove("color");
-            break;
-        default:
-            break;
-    }
-});
-// Registra cuando se pulsa una tecla para mover la serpiente y para darle color a los botones
-document.addEventListener("keydown", function (e) {
-    switch (e.code) {
-        case "ArrowUp":
-            document.getElementById("btn-top").classList.add("color");
-            if (ultimoMovimiento != 3) {
-                movimiento = 1;
-            }
-            break;
-        case "ArrowRight":
-            document.getElementById("btn-der").classList.add("color");
-            if (ultimoMovimiento != 4) {
-                movimiento = 2;
-            }
-            break;
-        case "ArrowDown":
-            document.getElementById("btn-bot").classList.add("color");
-            if (ultimoMovimiento != 1) {
-                movimiento = 3;
-            }
-            break;
-        case "ArrowLeft":
-            document.getElementById("btn-izq").classList.add("color");
-            if (ultimoMovimiento != 2) {
-                movimiento = 4;
-            }
-            break;
-        default:
-            break;
-    }
-
-});
 // Funcion que crea a la serpiente
 function crearSerpiente(tamañoSerpiente) {
     x = 0, y = 0, coords = Array();
@@ -188,13 +190,12 @@ function moverSnake() {
             break;
     }
     snake.forEach(coords => {
-        ctx.fillRect(coords[0], coords[1], cuadrado, cuadrado);
         ctx.fillStyle = "#314108";
+        ctx.fillRect(coords[0], coords[1], cuadrado, cuadrado);
     });
 }
 // Esta funcion detecta si si la cabeza ha tocado un borde, si ha tocado aluna parte de su cuerpo o una manzana y actua en consecuencia
 function detectarBordes() {
-    
     // Este if detecta si la serpiente ha cochado con una pared
     if ((snake[snake.length - 1][0] == 0 - cuadrado) || (snake[snake.length - 1][0] == pantalla.width) || (snake[snake.length - 1][1] == 0 - cuadrado) || (snake[snake.length - 1][1] == pantalla.height)) {
         terminarPartida();
@@ -206,6 +207,7 @@ function detectarBordes() {
             terminarPartida();
         }
     }
+    // Este if detecta si se ha comido una manzana
     if ((snake[snake.length - 1][0] == posicionManzana[0] * cuadrado) && (snake[snake.length - 1][1] == posicionManzana[1] * cuadrado)) {
         posicionManzana = crearManzana();
         comidoManzana = true;
@@ -220,6 +222,7 @@ function detectarBordes() {
 }
 // Esta función pinta la manzana, saca las coordenadas de la variables posicionManzana
 function pintarManzana() {
+    ctx.fillStyle = "red";
     ctx.fillRect(posicionManzana[0] * cuadrado, posicionManzana[1] * cuadrado, cuadrado, cuadrado);
 }
 // Esta funcino genera unas coordenadas aleatorias dentro del tablero
@@ -246,13 +249,14 @@ function crearManzana() {
 function inicio() {
     document.getElementById("start").classList.add('animate__animated', 'animate__backInDown', 'animate__delay-2s');
     document.getElementById("consola").classList.add('animate__animated', 'animate__jackInTheBox', 'animate__delay-1s');
-    const timeAuto = setTimeout(juegoAutomatico, 1);
+    setTimeout(juegoAutomatico, 1);
 }
 // Esta función se encargará de empezar el modo de juego automático
 function juegoAutomatico() {
     ctx.clearRect(0, 0, pantalla.height, pantalla.width);
     crearSerpiente(tamañoInicial);
     movimiento = 2;
+    posicionManzana = crearManzana();
     bucle = setInterval(automatico, 1000 / 40);
 }
 // Esta funcion moverá la serpiente automaticamente
@@ -269,7 +273,7 @@ function automatico() {
         movimiento = 3;
         document.getElementById("btn-bot").classList.add("color");
     }
-    if ( ((snake[snake.length - 1][1] % (resolucion / cuadrado) != 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != 0 + cuadrado) && (snake[snake.length - 1][0] != 0)) || (snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == pantalla.height - cuadrado)) {
+    if (((snake[snake.length - 1][1] % (resolucion / cuadrado) != 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != 0 + cuadrado) && (snake[snake.length - 1][0] != 0)) || (snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == pantalla.height - cuadrado)) {
         movimiento = 4;
         document.getElementById("btn-izq").classList.add("color");
     }
@@ -277,11 +281,11 @@ function automatico() {
         document.getElementById("btn-top").classList.add("color");
         movimiento = 1;
     }
-    if ((((snake[snake.length - 1][0] == 0) && (snake[snake.length - 1][1] == 0)) || ((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == 0))) || (snake[snake.length - 1][1] % (resolucion / cuadrado) == 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != pantalla.width - cuadrado) && (snake[snake.length - 1][0] != 0)){
+    if ((((snake[snake.length - 1][0] == 0) && (snake[snake.length - 1][1] == 0)) || ((snake[snake.length - 1][0] == 0 + cuadrado) && (snake[snake.length - 1][1] == 0))) || (snake[snake.length - 1][1] % (resolucion / cuadrado) == 0) && (snake[snake.length - 1][1] != 0) && (snake[snake.length - 1][0] != pantalla.width - cuadrado) && (snake[snake.length - 1][0] != 0)) {
         movimiento = 2
         document.getElementById("btn-der").classList.add("color");
     }
 }
-function aux(){
+function aux() {
     document.getElementById("puntos").classList.remove('animate__animated', 'animate__rubberBand');
 }

@@ -54,10 +54,15 @@ body {
     display: flex;
     flex-direction: row;
 
+    transition: .2s;
+
     z-index: 10;
 }
 .start:active{
     max-width: 295px;
+}
+.start:hover{
+    max-width: 315px;
 }
 .start > img{
     width: 100%;
