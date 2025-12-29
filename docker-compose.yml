@@ -2,12 +2,10 @@ version: '3.8'
 
 services:
   web:
-    image: nginx:alpine
+    build: .
     container_name: snake
     ports:
       - "8080:80"
-    volumes:
-      - ./:/usr/share/nginx/html:ro
     restart: unless-stopped
     networks:
       - cloudflare_default
