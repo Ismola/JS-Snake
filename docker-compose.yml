@@ -3,7 +3,7 @@ version: '3.8'
 services:
   web:
     image: nginx:alpine
-    container_name: js-snake-web
+    container_name: snake
     ports:
       - "8080:80"
     volumes:
