@@ -4,8 +4,8 @@ services:
   web:
     build: .
     container_name: snake
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     restart: unless-stopped
     networks:
       - cloudflare_default
